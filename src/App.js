@@ -9,29 +9,29 @@ function App() {
   const [editingItem, setEditingItem] = useState(null);
 
   // API URLs for Cloud Functions
-  const BASE_URL = 'https://asia-south1-gcp-items-demo.cloudfunctions.net';
-  const API = {
-    getItems: `${BASE_URL}/getItems`,
-    getItem: `${BASE_URL}/getItem`,
-    createItem: `${BASE_URL}/createItem`,
-    updateItem: `${BASE_URL}/updateItem`,
-    deleteItem: `${BASE_URL}/deleteItem`,
-  };
+  const PROJECT_ID = 'gcp-items-demo';
+  const REGION = 'asia-south1';
+  const BASE_URL = `https://${REGION}-${PROJECT_ID}.cloudfunctions.net`;
+
+  console.log('API Base URL:', BASE_URL);
 
   // Fetch all items
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch(API.getItems);
+      console.log('Fetching items from:', `${BASE_URL}/getItems`);
+      const response = await fetch(`${BASE_URL}/getItems`);
 
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Fetched data:', data);
       setItems(data);
       setError(null);
     } catch (err) {
+      console.error('Error details:', err);
       setError(`Error fetching items: ${err.message}`);
       setItems([]);
     } finally {
@@ -49,7 +49,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(API.createItem, {
+      const response = await fetch(`${BASE_URL}/createItem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function App() {
   // Delete an item
   const handleDeleteItem = async (id) => {
     try {
-      const response = await fetch(`${API.deleteItem}/${id}`, {
+      const response = await fetch(`${BASE_URL}/deleteItem/${id}`, {
         method: 'DELETE',
       });
 
@@ -106,7 +106,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${API.updateItem}/${editingItem.id}`, {
+      const response = await fetch(`${BASE_URL}/updateItem/${editingItem.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

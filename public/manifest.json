@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "GCP Items App",
+  "name": "GCP Items Demo App with Firebase and Firestore",
   "icons": [
     {
       "src": "favicon.ico",
